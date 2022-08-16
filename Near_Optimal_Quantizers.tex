@@ -37,9 +37,9 @@
 
 % Intro to zero-delay quantizers, summarize results from "Zero-Delay Lossy Coding"
 \section{Zero-Delay Lossy Coding and Optimal Quantizers}\label{optimal quantizers}
-We are interested in a variant of Shannon's lossy source coding problem: Given an information source \( \{X_t\}_{t\ge0} \) from a finite alphabet \( \mathbb{X} \), we wish to compress this source at rate \(R\) bits per source symbol, and then reproduce the source as \( \{\hat{X}_t\}_{t\ge0} \), where \(\hat{\mathbb{X}}\) is the (also finite) reproduction alphabet. In particular, a \((2^{RT},T)\) block code encodes T source symbols \(X_{[0,T-1]}\) as \(\eta^T : \mathbb{X}^T \to \{1,\ldots,2^{RT}\} \), and decodes them as \( \gamma^T : \{1,\ldots,2^{RT}\} \to \hat{\mathbb{X}}^T \). The goal is often to minimize the distortion, given by %chktex 3
+We are interested in a variant of Shannon's lossy source coding problem: Given an information source \( \{X_t\}_{t\ge0} \) from a finite alphabet \( \mathbb{X} \), we wish to compress this source at rate \(R\) bits per source symbol, and then reproduce the source as \( \{\hat{X}_t\}_{t\ge0} \), where \(\hat{\mathbb{X}}\) is the (also finite) reproduction alphabet. In particular, a \((2^{RT},T)\) block code encodes T source symbols \(X_{[0,T-1]}\) as \(\eta^T : \mathbb{X}^T \to \{1,\ldots,2^{RT}\} \), and decodes them as \( \gamma^T : \{1,\ldots,2^{RT}\} \to \hat{\mathbb{X}}^T \). The goal is often to minimize the distortion, given by
 
-\[ D_T(R) := \frac{1}{T} E[\sum_{t=0}^{T-1}d(X_t,\hat{X_t})]\] %chktex 3
+\[ D_T(R) := \frac{1}{T} E[\sum_{t=0}^{T-1}d(X_t,\hat{X_t})]\]
 
 We call a rate-distortion pair \((R,D)\) achievable if there exists a sequence of \((2^{RT},T)\) codes \((\eta^T,\gamma^T)\) such that
 
@@ -49,9 +49,9 @@ The minimum achievable distortion for a given rate \(R\) is denoted by \(D(R)\),
 
 \[D(R) = \lim_{T \to  \infty}D_T(R)\]
 
-However, this approach requires encoding very large blocks of data at a time, and hence incurs large delay. This delay may not be allowable in many real-time applications, and so we tackle a variant of this lossy coding problem, where we enforce zero delay (hence a block coding approach is not viable). We will assume throughout that the source \( \{X_t\}_{t \ge 0} \) is a discrete-time Markov process with probability matrix \( P \), which is irreducible and aperiodic (and thus admits a unique invariant measure, denoted by \( \pi^* \)). After encoding, the (compressed) information is sent over a discrete noiseless channel with input and output alphabets \( \mathcal{M} := \{1,\ldots,M\} \). %chktex 3
+However, this approach requires encoding very large blocks of data at a time, and hence incurs large delay. This delay may not be allowable in many real-time applications, and so we tackle a variant of this lossy coding problem, where we enforce zero delay (hence a block coding approach is not viable). We will assume throughout that the source \( \{X_t\}_{t \ge 0} \) is a discrete-time Markov process with probability matrix \( P \), which is irreducible and aperiodic (and thus admits a unique invariant measure, denoted by \( \pi^* \)). After encoding, the (compressed) information is sent over a discrete noiseless channel with input and output alphabets \( \mathcal{M} := \{1,\ldots,M\} \).
 
-Thus, the encoder is defined by a quantization policy \( \Pi = \{\eta_t\}_{t \ge 0} \), where \( \eta_t : \mathcal{M}^t \times \mathbb{X}^{t+1} \to \mathcal{M} \). That is, the encoder can use all past quantization outputs and all past and current source inputs to generate the current quantization output. This can be viewed as the quantization policy selecting a quantizer \( Q_t : \mathbb{X} \to \mathcal{M} \) using past information, then quantizing \( X_t \) as \( q_t = Q_t(X_t) \)~\cite{Linder}. Then, the decoder generates the reconstruction \( \hat{X}_t \) without delay, using decoder policy \( \gamma = \{\gamma_t\}_{t \ge 0} \), where \( \gamma_t : \mathcal{M}^{t+1} \to \hat{\mathbb{X}} \). Thus we have \( \hat{X}_t = \gamma_t(q_{[0,t]}) \). Note that, since the source alphabet is finite, there exists an optimal decoding policy for every encoding policy. Thus, we restrict our search to finding an optimal encoding policy and assume the corresponding optimal decoding policy is used. %chktex 3
+Thus, the encoder is defined by a quantization policy \( \Pi = \{\eta_t\}_{t \ge 0} \), where \( \eta_t : \mathcal{M}^t \times \mathbb{X}^{t+1} \to \mathcal{M} \). That is, the encoder can use all past quantization outputs and all past and current source inputs to generate the current quantization output. This can be viewed as the quantization policy selecting a quantizer \( Q_t : \mathbb{X} \to \mathcal{M} \) using past information, then quantizing \( X_t \) as \( q_t = Q_t(X_t) \)~\cite{Linder}. Then, the decoder generates the reconstruction \( \hat{X}_t \) without delay, using decoder policy \( \gamma = \{\gamma_t\}_{t \ge 0} \), where \( \gamma_t : \mathcal{M}^{t+1} \to \hat{\mathbb{X}} \). Thus we have \( \hat{X}_t = \gamma_t(q_{[0,t]}) \). Note that, since the source alphabet is finite, there exists an optimal decoding policy for every encoding policy. Thus, we restrict our search to finding an optimal encoding policy and assume the corresponding optimal decoding policy is used.
 
 In general, for the zero-delay coding problem, the goal is to minimize the average cost/distortion. In the infinite horizon case where \( X_0 \sim \pi_0 \), this is given by: %chktex 9
 \[ J(\pi_0, \Pi, \gamma) := \limsup_{T\to\infty}\mathbf{E}_{\pi_0}^{\Pi, \gamma}\left[\frac{1}{T}\sum_{t=0}^{T-1}d(X_t,\hat{X}_t)\right] \]
@@ -126,16 +126,16 @@ We need that \( \{\pi_t\} \), under a random exploration policy \( \Pi^* \), adm
 
 \subsubsection*{Predictor and Filter Merging}
 
-For a fixed \( x \in \mathbb{X} \), we denote \( h(x,\cdot) := h_x(\cdot) : \mathcal{Z} \to \mathbb{Y} \), and let the noise process \( \{Z_t\}_{t\ge0} \) have probability measure \( Z_0 \sim R \). We assume an ``exploration'' policy, so we have that \(R\) is random and positive everywhere. Therefore the noise process is assumed independent of the state process \( \{X_t\}_{t\ge0} \), so we can write the following update equation for the joint process \( \{X_t,Y_t\}_{t\ge0} \) %chktex 3
+For a fixed \( x \in \mathbb{X} \), we denote \( h(x,\cdot) := h_x(\cdot) : \mathcal{Z} \to \mathbb{Y} \), and let the noise process \( \{Z_t\}_{t\ge0} \) have probability measure \( Z_0 \sim R \). We assume an ``exploration'' policy, so we have that \(R\) is random and positive everywhere. Therefore the noise process is assumed independent of the state process \( \{X_t\}_{t\ge0} \), so we can write the following update equation for the joint process \( \{X_t,Y_t\}_{t\ge0} \)
 
-\[ P((X_{t+1},Y_{t+1}) | (X,Y)_{[0,t]} = (x,y)_{[0,t]}) = R(h_{x+1}^{-1}(y_{t+1}))P(x_{t+1} | x_t) \] %chktex 3
+\[ P((X_{t+1},Y_{t+1}) | (X,Y)_{[0,t]} = (x,y)_{[0,t]}) = R(h_{x+1}^{-1}(y_{t+1}))P(x_{t+1} | x_t) \]
 
-It follows that \( \{X_t,Y_t\}_{t\ge0} \) is Markov, with a probability measure on \( \mathbb{X}^{\mathbb{Z}_{\ge0}} \times \mathbb{Y}^{\mathbb{Z}_{\ge0}} \), endowed with the product topology. Since this measure depends on the distribution of \( X_0 \), we denote this measure by \( P^\mu \) where \( X_0 \sim \mu \). %chktex 3
+It follows that \( \{X_t,Y_t\}_{t\ge0} \) is Markov, with a probability measure on \( \mathbb{X}^{\mathbb{Z}_{\ge0}} \times \mathbb{Y}^{\mathbb{Z}_{\ge0}} \), endowed with the product topology. Since this measure depends on the distribution of \( X_0 \), we denote this measure by \( P^\mu \) where \( X_0 \sim \mu \).
 
-Given the above characterization, we can view \( \pi_t \) as what is known as a \emph{predictor} in the POMDP literature (that is, \( \pi_t(x_t) = P(x_t | y_{[0,t-1]}) \)). Recall the recursion equation~\eqref{eq:1} and note that this is dependent on the initialization of \( \pi_0 \), also called the \emph{prior}. We denote the predictor process resulting from the prior \( \nu \) as \( \{\pi_t^\nu \}_{t\ge0} \). A common question in the POMDP literature is when measures such as the predictor are \emph{stable}, which essentially means that the process eventually forgets an incorrect prior, i.e. \( \nu \neq \mu \). More formally, we introduce the following definitions %chktex 3
+Given the above characterization, we can view \( \pi_t \) as what is known as a \emph{predictor} in the POMDP literature (that is, \( \pi_t(x_t) = P(x_t | y_{[0,t-1]}) \)). Recall the recursion equation~\eqref{eq:1} and note that this is dependent on the initialization of \( \pi_0 \), also called the \emph{prior}. We denote the predictor process resulting from the prior \( \nu \) as \( \{\pi_t^\nu \}_{t\ge0} \). A common question in the POMDP literature is when measures such as the predictor are \emph{stable}, which essentially means that the process eventually forgets an incorrect prior, i.e. \( \nu \neq \mu \). More formally, we introduce the following definitions
 
 \begin{definition}\label{definition:weak_merge}
-    Two sequences of probability measures \( \{P_t\}_{t\ge0} \) and \( \{Q_t\}_{t\ge0} \) merge weakly if \( \forall f \in C_b(\mathbb{X}) \), we have \( \lim_{t \to \infty} |\int fdP_t - \int fdQ_t| = 0\). %chktex 3 chktex 21
+    Two sequences of probability measures \( \{P_t\}_{t\ge0} \) and \( \{Q_t\}_{t\ge0} \) merge weakly if \( \forall f \in C_b(\mathbb{X}) \), we have \( \lim_{t \to \infty} |\int fdP_t - \int fdQ_t| = 0\).
 \end{definition}
 
 \begin{definition}\label{definition:TV_merge}
@@ -143,11 +143,11 @@ Given the above characterization, we can view \( \pi_t \) as what is known as a 
 \end{definition}
 
 \begin{definition}\label{definition:weak_stable}
-    A predictor process is stable in the sense of weak merging in expectation if for any \( f \in C_b(\mathbb{X}) \) and any prior \( \nu \) with \( \mu \ll \nu \), we have \( \lim_{n \to \infty}E^\mu [|\int fd\pi_t^\mu - \int fd\pi_t^\nu|] = 0 \). %chktex 3
+    A predictor process is stable in the sense of weak merging in expectation if for any \( f \in C_b(\mathbb{X}) \) and any prior \( \nu \) with \( \mu \ll \nu \), we have \( \lim_{n \to \infty}E^\mu [|\int fd\pi_t^\mu - \int fd\pi_t^\nu|] = 0 \).
 \end{definition}
 
 \begin{definition}\label{definition:TV_stable}
-    A predictor process is stable in the sense of total variation in expectation if for any prior \( \nu \) with \( \mu \ll \nu \), we have \( \lim_{n \to \infty}E^\mu [||\pi_t^\mu - \pi_t^\nu||_{TV}] = 0 \). %chktex 3
+    A predictor process is stable in the sense of total variation in expectation if for any prior \( \nu \) with \( \mu \ll \nu \), we have \( \lim_{n \to \infty}E^\mu [||\pi_t^\mu - \pi_t^\nu||_{TV}] = 0 \).
 \end{definition}
 
 Note that merging (respectively, stability) in total variation implies merging (respectively, stability) weakly since the continuous and bounded functions \( C_b(\mathbb{X}) \) are a subset of the measurable and bounded functions.
@@ -155,11 +155,11 @@ Note that merging (respectively, stability) in total variation implies merging (
 The above definitions are of interest due to a result from~\cite[Theorem 2]{Stettner} relating stability to ergodicity. We state and prove a slightly modified version of this result here, adapted for our setup.
 
 \begin{theorem}\label{theorem:unique}
-    Assume that there exists a unique invariant measure \( \zeta(dx,dy) \) for the Markov process \( \{X_t,Y_t\}_{t\ge0} \) and that the predictor process \( \{\pi_t^\mu \}_{t\ge0} \) is stable in the sense of~\ref{definition:weak_stable}. Then there is at most one invariant measure for the the joint Markov process \( \{X_t,Y_t,\pi_t^\nu \} \) for any prior \( \nu \). %chktex 3
+    Assume that there exists a unique invariant measure \( \zeta(dx,dy) \) for the Markov process \( \{X_t,Y_t\}_{t\ge0} \) and that the predictor process \( \{\pi_t^\mu \}_{t\ge0} \) is stable in the sense of~\ref{definition:weak_stable}. Then there is at most one invariant measure for the the joint Markov process \( \{X_t,Y_t,\pi_t^\nu \}_{t\ge0} \) for any prior \( \nu \).
 \end{theorem}
 
 \begin{proof}
-    Assume that \( m_1,m_2 \in \mathcal{P}(\mathbb{X} \times \mathbb{Y} \times \mathcal{P}(\mathbb{X})) \) are two invariant measures for the joint process \( \{X_t,Y_t,\pi_t^\nu \} \). Then their projections on \( \mathbb{X} \times \mathbb{Y} \) are invariant for \( \{X_t, Y_t\}_{t\ge0} \). Then, by unique invariance of \( \zeta(dx,dy) \) we have %chktex 3
+    Assume that \( m_1,m_2 \in \mathcal{P}(\mathbb{X} \times \mathbb{Y} \times \mathcal{P}(\mathbb{X})) \) are two invariant measures for the joint process \( \{X_t,Y_t,\pi_t^\nu \} \). Then their projections on \( \mathbb{X} \times \mathbb{Y} \) are invariant for \( \{X_t, Y_t\}_{t\ge0} \). Then, by unique invariance of \( \zeta(dx,dy) \) we have
     \[ m_i(dx,dy,d\nu) = P_{m_i}(d\nu | x,y)\zeta(dx,dy) \]
 
     Then we show that \( m_1(F) = m_2(F) \) for each \( F \) on a set of measure-determining functions~\cite{Stettner}, namely those s.t. \( F(x,y,\nu) = \phi(x,y)H(\nu(\phi_1),\ldots,\nu(\phi_l)) \), where \( \phi \in C(\mathbb{X} \times \mathbb{Y}), \phi_1,\ldots,\phi_l \in C(\mathbb{X}), H \) is bounded and Lipschitz continuous with constant \( L_H \), and \( l \in \mathbb{N} \).
@@ -177,18 +177,51 @@ The above definitions are of interest due to a result from~\cite[Theorem 2]{Stet
     Since the predictors are stable in the sense of~\ref{definition:weak_stable}, and by the dominated convergence theorem, the last line converges to zero as \( n \to \infty \).
 \end{proof}
 
-Note that the above result concerns the joint process \( \{X_t,Y_t,\pi_t^\nu \} \). We show below that this implies unique ergodicity of \( \{\pi_t\} \).
+Note that the above result concerns the joint process \( \{X_t,Y_t,\pi_t \}_{t\ge0} \). The following theorem from~\cite{Stettner} extends this to \( \{Y_t,\pi_t \}_{t\ge0} \).
+
+\begin{theorem}\cite[Theorem 3]{Stettner}
+    If the joint process \( \{X_t,Y_t,\pi_t \}_{t\ge0} \) is Feller and admits at most one invariant measure, then \( \{Y_t, \pi_t\}_{t\ge0} \) admits at most one invariant measure.
+\end{theorem}
+
+Note that the above Feller assumption is trivially satisfied in the case where \( \mathbb{X} \) and \( \mathbb{Y} \) are finite, since \( \{\pi_t\}_{t\ge0} \) was already shown to be Feller in~\cite{Linder}. We have the following result concerning \( \{\pi_t\}_{t\ge0} \).
 
 \begin{theorem}
-    If the joint process \( \{X_t,Y_t,\pi_t^\nu \} \) admits at most one invariant measure, then \( \{\pi_t\} \) admits at most one invariant measure.
+    If the joint process \( \{Y_t, \pi_t\}_{t\ge0} \) admits at most one invariant measure, then \( \{\pi_t\}_{t\ge0} \) admits at most one invariant measure.
 \end{theorem}
 
 \begin{proof}
-    \textcolor{blue}{Should be something like the tightness argument in~\cite[Theorem 3]{Stettner}. Still working on this.}
+    Let there be 2 different invariant measures for \( \{\pi_t\}_{t\ge0} \) (say \(\kappa_1\) and \(\kappa_2\)). By invariance, we have
+    \[ \kappa_i(d\pi') = \int_\pi \kappa_i(d\pi)T(d\pi' | \pi), \quad i=1,2 \]
+    where \( T \) is the transition kernel for the process \( \{\pi_t\}_{t\ge0} \).
+
+    We multiply both sides by \( \Gamma(dy'|\pi') := \int_{x'} \Delta(dy' | x')P(dx' | \pi') = \int_{x'} \Delta(dy' | x')\pi'(dx') \), where we use \( \Gamma \) and \( \Delta \) to denote the appropriate kernels. Then,
+    \begin{align*}
+        \kappa_i(d\pi')\Gamma(dy'|\pi') & = \int_\pi \kappa_i(d\pi)T(d\pi' | \pi)\Gamma(dy'|\pi')                              \\
+                                        & = \int_\pi \int_y \kappa_i(d\pi)P(d\pi',dy | \pi)\Gamma(dy'|\pi')                    \\
+                                        & = \int_\pi \int_y \kappa_i(d\pi)\Gamma(dy | \pi)P(d\pi' | \pi, y)\Gamma(dy'|\pi')    \\
+                                        & = \int_\pi \int_y \kappa_i(d\pi)\Gamma(dy | \pi)P(d\pi' | \pi, y)P(dy'|\pi', \pi, y) \\
+                                        & = \int_\pi \int_y \kappa_i(d\pi)\Gamma(dy | \pi)\Xi(d\pi', dy' | \pi, y)             \\
+    \end{align*}
+
+    The third line follows from the fact that given \(\pi'\), \( y' \) is conditionally independent of \( \pi \), and the rest follow from standard conditional probability laws. Here, \( \Xi(d\pi', dy' | \pi, y) \) is the transition kernel for the process \( \{Y_t, \pi_t\} \).
+
+    And thus, the measures \( \kappa_i \Gamma \) are invariant for \( \{Y_t, \pi_t\} \). But, since we assumed \(\kappa_1 \neq \kappa_2 \), there exists \( f \in C(\mathcal{P}(\mathbb{X})) \) such that
+    \begin{align*}
+        \int_\pi f(\pi)\kappa_1(d\pi) & \neq \int_\pi f(\pi)\kappa_2(d\pi)
+    \end{align*}
+
+    So by taking \( F \in C(\mathcal{P}(\mathbb{X})) \) such that \( F(\pi,y) = f(\pi) \), we obtain:
+    \begin{align*}
+        \int_\pi \int_y F(\pi,y)\kappa_1(d\pi)\Gamma(dy|\pi) & = \int_\pi f(\pi)\kappa_1(d\pi)                        \\
+                                                             & \neq \int_\pi f(\pi)\kappa_2(d\pi)                     \\
+                                                             & = \int_\pi \int_y F(\pi,y)\kappa_2(d\pi)\Gamma(dy|\pi)
+    \end{align*}
+
+    which implies \( \kappa_1\Gamma \) and \( \kappa_2\Gamma \) are 2 different invariant measures for \( \{Y_t, \pi_t\} \), leading to a contradiction.
 \end{proof}
 
 \subsubsection*{Predictor Stability}
-In light of~\ref{theorem:unique}, we want to show that our predictor process \( \{\pi_t\}_{t\ge0} \) is stable in the sense of~\ref{definition:weak_stable}. While stability (and even unique ergodicity) of the predictor have been studied extensively (see e.g. \cite{Chigansky}, \cite{DM} for discussions), the assumptions of these theorems are in general quite strong, and usually not applicable for large classes of sources. For example, they may require that the state has a uniformly positive transition density, etc.~\cite{Chigansky}. %chktex 3 %chktex 2
+In light of~\ref{theorem:unique}, we want to show that our predictor process \( \{\pi_t\}_{t\ge0} \) is stable in the sense of~\ref{definition:weak_stable}. While stability (and even unique ergodicity) of the predictor have been studied extensively (see e.g. \cite{Chigansky}, \cite{DM} for discussions), the assumptions of these theorems are in general quite strong, and usually not applicable for large classes of sources. For example, they may require that the state has a uniformly positive transition density, etc.~\cite{Chigansky}.  %chktex 2
 
 In order to generalize our sources and quantizers as much as possible, we will utilize results in~\cite{Curtis}, which relate the stability of the predictor to stability of the \emph{filter}. The filter has the same form as the predictor but is further conditioned on \( y_t \) (that is, \( \pi_t^* = P(x_t | y_{[0,t]}) \)). We have the following result.
 
@@ -208,9 +241,9 @@ And finally, a result to prove that the filter is stable in total variation in e
 
 To show that this density is positive in the quantizer case, recall that under a memoryless exploration policy we have that \(R\) is positive everywhere. Then, since \( \mathcal{Q} \) contains every posssible quantizer \( Q : \mathbb{X} \to \mathcal{M} \), we have that \( \forall (x,y) \), there exists at least one quantizer s.t. \( Q(x) = y \), and thus \( h_x^{-1}(y) \) is nonempty \( \forall (x,y) \). Then, since \(R\) is positive everywhere, we obtain by~\ref{lemma:nondegenerate} that the filter is stable in total variation in expectation.
 
-Therefore, by~\ref{lemma:filter-predictor}, the predictor is stable in total variation in expectation, which implies weak stability in expectation, and so by~\ref{theorem:unique} we have that \( \{\pi_t, Y_t\}_{t\ge0} \) admits at most one invariant measure. %chktex 3
+Therefore, by~\ref{lemma:filter-predictor}, the predictor is stable in total variation in expectation, which implies weak stability in expectation, and so by~\ref{theorem:unique} we have that \( \{\pi_t, Y_t\}_{t\ge0} \) admits at most one invariant measure.
 
-Note that the above arguments hold as long as, \( \forall (x,y) \), our set of quantizers contains \emph{at least one} quantizer \( Q \) st \( Q(x) = y \), and therefore we could operate with a reduced set of quantizers. More concretely, we impose the following assumption on our set of quantizers \( \mathcal{Q} \). %chktex 3
+Note that the above arguments hold as long as, \( \forall (x,y) \), our set of quantizers contains \emph{at least one} quantizer \( Q \) st \( Q(x) = y \), and therefore we could operate with a reduced set of quantizers. More concretely, we impose the following assumption on our set of quantizers \( \mathcal{Q} \).
 
 \begin{assumption}\label{assumption:one-bin}
     Let \( \bar{Q}_{xy} = \{Q \in \mathcal{Q} : Q(x) = y\} \). Then \( \forall x \in \mathbb{X} \) and \( \forall y \in \mathcal{M} \) we have \(\bar{Q}_{xy} \neq \emptyset \).
@@ -220,7 +253,7 @@ Note that the above arguments hold as long as, \( \forall (x,y) \), our set of q
 Finally, the existence of an invariant measure for \( \{\pi_t\} \) is guaranteed since \( \{\pi_t\} \) is weak Feller (see~\ref{lemma:weak}) on a compact space \( \mathcal{P}(\mathbb{X}) \). Therefore we have the following lemma.
 
 \begin{lemma}\label{lemma:invariant}
-    If the set of quantizers \( \mathcal{Q} \) satisfies Assumption~\ref{assumption:one-bin}, then under a memoryless exploration policy, the Markov process \( \{\pi_t\}_{t\ge0} \) admits a unique invariant probability measure. %chktex 3
+    If the set of quantizers \( \mathcal{Q} \) satisfies Assumption~\ref{assumption:one-bin}, then under a memoryless exploration policy, the Markov process \( \{\pi_t\}_{t\ge0} \) admits a unique invariant probability measure.
 \end{lemma}
 
 In light of all these properties of the process \( \{\pi_t\} \), we now have that the quantized Q-learning results in~\cite{Kara} are applicable. We then have the following algorithms.
@@ -237,32 +270,32 @@ Since the state space \( \mathbb{X} \) is finite, say with \( |\mathbb{X}| = m \
 \begin{tabularx}{0.9\linewidth}{|l X|} %chktex 44
     \bottomrule
     \multicolumn{2}{|l|}{\textbf{Algorithm 1:} Predictor Quantization}                                 \\
-    \showline & \textbf{Set Parameters}                                                                \\ %chktex 1
-    \showline & \quad Predictor (\( \pi_t = [p_1, \ldots, p_m]) \)                                     \\ %chktex 1
-    \showline & \quad Granularity (\( n \))                                                            \\ %chktex 1
-    \showline & \textbf{for} \( i = 1, \ldots, m \)                                                    \\ %chktex 1
-    \showline & \quad \( k_i' = \lfloor np_i + \frac{1}{2} \rfloor \)                                  \\ %chktex 1
-    \showline & \textbf{end}                                                                           \\ %chktex 1
-    \showline & Set \( n' = \sum_i k_i' \)                                                             \\ %chktex 1
-    \showline & \textbf{if} \( n=n' \)                                                                 \\ %chktex 1
-    \showline & \quad \textbf{Return} \([\frac{k_1'}{n}, \ldots, \frac{k_m'}{n}] \)                    \\ %chktex 1
-    \showline & \textbf{else}                                                                          \\ %chktex 1
-    \showline & \quad \textbf{for} \( i=1,\ldots,m \)                                                  \\ %chktex 1
-    \showline & \quad\quad \( \delta_i = k_i' - np_i\)                                                 \\ %chktex 1
-    \showline & \quad \textbf{end}                                                                     \\ %chktex 1
-    \showline & \quad \textbf{Sort} \( \delta_i \) s.t. \( \delta_{i_1} \le \ldots \le \delta_{i_m} \) \\ %chktex 1
-    \showline & \quad Set \( \Delta = n'-n \)                                                          \\ %chktex 1
-    \showline & \quad \textbf{if} \( \Delta > 0 \)                                                     \\ %chktex 1
-    \showline & \quad\quad \(k_{i_j} = \begin{cases}  %chktex 1
+    \showline & \textbf{Set Parameters}                                                                \\
+    \showline & \quad Predictor (\( \pi_t = [p_1, \ldots, p_m]) \)                                     \\
+    \showline & \quad Granularity (\( n \))                                                            \\
+    \showline & \textbf{for} \( i = 1, \ldots, m \)                                                    \\
+    \showline & \quad \( k_i' = \lfloor np_i + \frac{1}{2} \rfloor \)                                  \\
+    \showline & \textbf{end}                                                                           \\
+    \showline & Set \( n' = \sum_i k_i' \)                                                             \\
+    \showline & \textbf{if} \( n=n' \)                                                                 \\
+    \showline & \quad \textbf{Return} \([\frac{k_1'}{n}, \ldots, \frac{k_m'}{n}] \)                    \\
+    \showline & \textbf{else}                                                                          \\
+    \showline & \quad \textbf{for} \( i=1,\ldots,m \)                                                  \\
+    \showline & \quad\quad \( \delta_i = k_i' - np_i\)                                                 \\
+    \showline & \quad \textbf{end}                                                                     \\
+    \showline & \quad \textbf{Sort} \( \delta_i \) s.t. \( \delta_{i_1} \le \ldots \le \delta_{i_m} \) \\
+    \showline & \quad Set \( \Delta = n'-n \)                                                          \\
+    \showline & \quad \textbf{if} \( \Delta > 0 \)                                                     \\
+    \showline & \quad\quad \(k_{i_j} = \begin{cases}
         k_{i_j}' \quad   & j = 1,\ldots,m-\Delta   \\
         k_{i_j}'-1 \quad & j = m-\Delta+1,\ldots,m
     \end{cases}\)                                    \\
-    \showline & \quad \textbf{else}                                                                    \\ %chktex 1
-    \showline & \quad\quad \(k_{i_j} = \begin{cases} %chktex 1
+    \showline & \quad \textbf{else}                                                                    \\
+    \showline & \quad\quad \(k_{i_j} = \begin{cases}
         k_{i_j}' \quad   & j = 1,\ldots,|\Delta|   \\
         k_{i_j}'-1 \quad & j = |\Delta|+1,\ldots,m
     \end{cases}\)                                    \\
-    \showline & \quad \textbf{Return} \([\frac{k_1'}{n}, \ldots, \frac{k_m'}{n}] \)                    \\ %chktex 1
+    \showline & \quad \textbf{Return} \([\frac{k_1'}{n}, \ldots, \frac{k_m'}{n}] \)                    \\
     \toprule
 \end{tabularx}
 
@@ -282,25 +315,25 @@ Using the above algorithm to quantize \( \pi_t \), we have the following algorit
 \begin{tabularx}{0.9\linewidth}{|l X|} %chktex 44
     \bottomrule
     \multicolumn{2}{|l|}{\textbf{Algorithm 2:} Quantized Q-learning}                                          \\
-    \showline & \textbf{Set Parameters}                                                                       \\ %chktex 1
-    \showline & \quad State space (\( \mathbb{X} \)) and state transition kernel (\( P(x_{t+1} | x_t) \))     \\ %chktex 1
-    \showline & \quad Distribution of \( X_0 \) (\( \pi_0 \))                                                 \\ %chktex 1
-    \showline & \quad Granularity of types for quantization of \( \pi_t \) (\( n \))                          \\ %chktex 1
-    \showline & \quad Set of quantizers (\( \mathcal{Q} \))                                                   \\ %chktex 1
-    \showline & \textbf{Initialize} arbitrary Q-table of size \( |\mathbb{Z}_n| \times |\mathcal{Q}| \)       \\ %chktex 1
-    \showline & \textbf{Initialize} state \( x_0 \) according to \( \pi_0 \)                                  \\ %chktex 1
-    \showline & \textbf{Quantize} \( \pi_0 \) according to~\ref{algorithm1}, call this \( \hat{\pi}_0 \)      \\ %chktex 1
-    \showline & Select quantizer \( Q_0 \) according to randomized exploration policy \( \Pi^* \)             \\ %chktex 1
-    \showline & \textbf{Quantize} \( x_0 \) according to \( q_0 = Q_0(x_0) \)                                 \\ %chktex 1
-    \showline & \textbf{for} \( t = 0 \ldots T-1 \)                                                           \\ %chktex 1
-    \showline & \quad Receive cost of quantization according to \( c(\pi_t, Q_t) \) (see~\eqref{eq:cost})     \\ %chktex 1
-    \showline & \quad Receive \( x_{t+1} \) according to \( P(x_{t+1} | x_t) \)                               \\ %chktex 1
-    \showline & \quad Receive \( \pi_{t+1} \) according to \eqref{eq:1}                                       \\ %chktex 1 chktex 2
-    \showline & \quad Quantize \( \pi_{t+1} \) according to~\ref{algorithm1}, call this \( \hat{\pi}_{t+1} \) \\ %chktex 1
-    \showline & \quad Update Q-table using \eqref{eq:2}                                                       \\ %chktex 1 chktex 2
-    \showline & \quad Select quantizer \( Q_{t+1} \) according to randomized exploration policy \( \Pi^* \)   \\ %chktex 1
-    \showline & \quad Quantize \( x_{t+1} \) according to \( q_{t+1} = Q_{t+1}(x_{t+1}) \)                    \\ %chktex 1
-    \showline & \textbf{end}                                                                                  \\ %chktex 1
+    \showline & \textbf{Set Parameters}                                                                       \\
+    \showline & \quad State space (\( \mathbb{X} \)) and state transition kernel (\( P(x_{t+1} | x_t) \))     \\
+    \showline & \quad Distribution of \( X_0 \) (\( \pi_0 \))                                                 \\
+    \showline & \quad Granularity of types for quantization of \( \pi_t \) (\( n \))                          \\
+    \showline & \quad Set of quantizers (\( \mathcal{Q} \))                                                   \\
+    \showline & \textbf{Initialize} arbitrary Q-table of size \( |\mathbb{Z}_n| \times |\mathcal{Q}| \)       \\
+    \showline & \textbf{Initialize} state \( x_0 \) according to \( \pi_0 \)                                  \\
+    \showline & \textbf{Quantize} \( \pi_0 \) according to~\ref{algorithm1}, call this \( \hat{\pi}_0 \)      \\
+    \showline & Select quantizer \( Q_0 \) according to randomized exploration policy \( \Pi^* \)             \\
+    \showline & \textbf{Quantize} \( x_0 \) according to \( q_0 = Q_0(x_0) \)                                 \\
+    \showline & \textbf{for} \( t = 0 \ldots T-1 \)                                                           \\
+    \showline & \quad Receive cost of quantization according to \( c(\pi_t, Q_t) \) (see~\eqref{eq:cost})     \\
+    \showline & \quad Receive \( x_{t+1} \) according to \( P(x_{t+1} | x_t) \)                               \\
+    \showline & \quad Receive \( \pi_{t+1} \) according to~\eqref{eq:1}                                       \\  chktex 2
+    \showline & \quad Quantize \( \pi_{t+1} \) according to~\ref{algorithm1}, call this \( \hat{\pi}_{t+1} \) \\
+    \showline & \quad Update Q-table using~\eqref{eq:2}                                                       \\  chktex 2
+    \showline & \quad Select quantizer \( Q_{t+1} \) according to randomized exploration policy \( \Pi^* \)   \\
+    \showline & \quad Quantize \( x_{t+1} \) according to \( q_{t+1} = Q_{t+1}(x_{t+1}) \)                    \\
+    \showline & \textbf{end}                                                                                  \\
     \toprule
 \end{tabularx}
 
@@ -316,8 +349,8 @@ The proof that this algorithm converges to the optimal policy as \(n\) grows fol
     \[ P^*(\hat{\pi}_j|\hat{\pi}_i,Q) = \int_{B_i}P(B_j|\pi,Q)\phi_i(dx) \]
     where
     \[ \phi_i(A) := \frac{\phi_{\Pi^*}(A)}{\phi_{\Pi^*}(B_i)},\quad \forall A \subset B_i, \quad \forall i \in \{ 1,\ldots,|\mathbb{Z}_n| \} \]
-    and \( \phi_{\Pi^*} \) is the (unique) invariant measure of \( \{\pi_t\}_{t\ge0} \) under the exploration policy \( \Pi^* \). %chktex 3
-    Also, \( B_i \subset \mathcal{P}(\mathbb{X}) \) is the bin under the quantization algorithm in~\ref{algorithm1} (i.e. \( \{B_i\}_{i=1}^{|\mathbb{Z}_n|} \) is a partition of \( \mathcal{P}(\mathbb{X}) \)). %chktex 3
+    and \( \phi_{\Pi^*} \) is the (unique) invariant measure of \( \{\pi_t\}_{t\ge0} \) under the exploration policy \( \Pi^* \).
+    Also, \( B_i \subset \mathcal{P}(\mathbb{X}) \) is the bin under the quantization algorithm in~\ref{algorithm1} (i.e. \( \{B_i\}_{i=1}^{|\mathbb{Z}_n|} \) is a partition of \( \mathcal{P}(\mathbb{X}) \)).
 
     Furthermore, the policy \( \bar{\Pi}(\hat{\pi}) = \argmin_{Q \in \mathcal{Q}} Q^*(\hat{\pi},Q) \) satisfies
 
@@ -331,10 +364,10 @@ The proof that this algorithm converges to the optimal policy as \(n\) grows fol
 \end{proof}
 
 \section{Examples}
-For all the following, we will use MSE as our distortion measure, i.e. \( d(x,\hat{x}) = (x - \hat{x})^2 \). %chktex 3
+For all the following, we will use MSE as our distortion measure, i.e. \( d(x,\hat{x}) = (x - \hat{x})^2 \), and a high discount factor (0.9999).
 % Matlab outputs
 \subsection{Trivial Example}
-We start with the simplest case, where \( \mathbb{X} = \{1, 2\} \). Let the transition matrix of \( \{ X_t \}_{t\ge0} \) be \( T = \begin{pmatrix} 0.75 & 0.25 \\ 0.75 & 0.25 \\ \end{pmatrix} \). The only useful quantizers to pick in this situation are constant ones, that is \( Q_i(x) = i \quad \forall x\in\mathbb{X}, i=1,2 \). %chktex 3
+We start with the simplest case, where \( \mathbb{X} = \{1, 2\} \). Let the transition matrix of \( \{ X_t \}_{t\ge0} \) be \( T = \begin{pmatrix} 0.75 & 0.25 \\ 0.75 & 0.25 \\ \end{pmatrix} \). The only useful quantizers to pick in this situation are constant ones, that is \( Q_i(x) = i \quad \forall x\in\mathbb{X}, i=1,2 \).
 
 Now suppose we wish to quantize \( \pi_t \) very coarsely, say \( n=2 \). Then we have \( Z_n = \{ (1,0), (\frac{1}{2}, \frac{1}{2})\), \( (0,1) \} \), so our Q-table is of size \( 3 \times 2 \).
 
@@ -351,17 +384,17 @@ Note that in this case, it doesn't matter what \( n \) is, since \( \pi_t \) is 
 
 \subsection{More Interesting Examples}
 
-Say we consider all the two-cell quantizers on \( \mathbb{X} = \{1,\ldots,5\} \), with a randomly generated transition matrix. We run the above algorithm with varying quantization levels. Note that the number of bins is related to \( n \) by the following relation: \( \text{\# bins} = {{n+m-1} \choose {m-1}} \) (recall that \( m = |\mathbb{X}| \))~\cite{Reznik}. We get the following graphs relating the long-term discounted cost to the quantization level.
+Say we consider all the two-cell quantizers on \( \mathbb{X} = \{1,\ldots,5\} \), with a randomly generated transition matrix. We run the above algorithm with varying quantization levels. Note that the number of bins is related to \( n \) by the following relation: \( \text{\# bins} = {{n+m-1} \choose {m-1}} \) (recall that \( m = |\mathbb{X}| \))~\cite{Reznik}. The first graph below shows the performance gain as we increase the number of bins, while the second shows the convergence of the algorithm for different numbers of bins. Note that each successive line in the second graph corresponds to increasing the value of \(n\) by 1.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=6cm, width=10cm]{Cost_5.png}
+    \includegraphics[height=6cm, width=10cm]{cost_5.png}
     \caption{Long-term discounted cost of learned policies}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=6cm, width=10cm]{Quantization_5.png}
+    \includegraphics[height=6cm, width=10cm]{convergence_5.png}
     \caption{Convergece of learned policies}
 \end{figure}
 
@@ -371,13 +404,13 @@ Similarly, we have the following graphs for \( \mathbb{X} = \{1,\ldots,16\} \).
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=6cm, width=10cm]{Cost_16.png}
+    \includegraphics[height=6cm, width=10cm]{cost_16.png}
     \caption{Long-term discounted cost of learned policies}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=6cm, width=10cm]{Quantization_16.png}
+    \includegraphics[height=6cm, width=10cm]{convergence_16.png}
     \caption{Convergece of learned policies}
 \end{figure}
 
@@ -386,7 +419,10 @@ Here, additional quantization may be required to get closer to the optimal polic
 \section{Future Work}
 We note that the above Q-learning algorithm only converges when \( \beta \in (0,1) \) (i.e.\ for the discounted cost problem) and therefore is not applicable for the average cost problem, which is generally what we are interested in for source coding. It may be possible to adapt the Q-learning algorithm to solve the average cost problem (see e.g.\ \cite{Abounadi}), but this would require an extension of the results in~\cite{Kara} to this algorithm, which may require additional constraints on the source \( \mathbb{X} \).
 
-Furthermore, we would like to extend the algorithm to the case when \( \mathbb{X} \) is continuous. The primary obstable here would be that the number of possible quantizers is infinite, and so a method of quantizing the space of quantizers would need to be developed. We note however that quantizing the action space (in this context, the set of quantizers) is considered in the results from~\cite{Kara}, so convergence should follow with some minor alterations.
+Furthermore, we would like to extend the algorithm to the case when \( \mathbb{X} \) is continuous. The primary obstable here would be that the number of possible quantizers is infinite, and so a method of quantizing the space of quantizers would need to be developed. We note however that quantizing the action space (in this context, the set of quantizers) is considered in the results from~\cite{Kara}, and also all of the predictor stability/unique invariance arguments in~\ref{section:unique-ergodicity} hold when \( \mathbb{X} \) is continuous. So with some minor alterations, the algorithm will still converge in the continuous case.
 
-\printbibliography %chktex 1
+Finally, it is desirable to have a bound on the quantization required to obtain near-optimality. This was considered in~\cite{Kara}, however the required continuity of the transition kernel is stronger than weak continuity. It may be useful to determine under which conditions (if any), we can obtain this stronger continuity for the zero-delay coding problem.
+
+\newpage
+\printbibliography
 \end{document} %chktex 17
