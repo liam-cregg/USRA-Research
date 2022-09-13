@@ -382,9 +382,9 @@ Running the above algorithm for \( T=10^5 \) iterations gives the following Q-ta
 
 Note that in this case, it doesn't matter what \( n \) is, since \( \pi_t \) is constant. Nevertheless, the algorithm converges to the correct optimal quantizer (it should always quantize to 1 since the value 1 appears more frequently).
 
-\subsection{More Interesting Examples}
+\subsection{Effects of Increasing \(n\) for a Fixed Rate}
 
-Say we consider all the two-cell quantizers on \( \mathbb{X} = \{1,\ldots,5\} \), with a randomly generated transition matrix. We run the above algorithm with varying quantization levels. Note that the number of bins is related to \( n \) by the following relation: \( \text{\# bins} = {{n+m-1} \choose {m-1}} \) (recall that \( m = |\mathbb{X}| \))~\cite{Reznik}. The first graph below shows the performance gain as we increase the number of bins, while the second shows the convergence of the algorithm for different numbers of bins. Note that each successive line in the second graph corresponds to increasing the value of \(n\) by 1.
+Say we consider all the two-cell quantizers on \( \mathbb{X} = \{1,\ldots,5\} \), with a randomly generated transition matrix. That is, the rate of our quantizers for \( \mathbb{X} \) is \textbf{constant}. We let the rate of our quantizer for \( \pi_t \) vary. Note that the number of bins for \( \pi_t \) (when using Algorithm 1) is related to \( n \) by the following relation: \( \text{\# bins} = {{n+|\mathbb{X}|-1} \choose {|\mathbb{X}|-1}} \)~\cite{Reznik}. The first graph below shows the performance gain as we increase the number of bins, while the second shows the convergence of the algorithm for different numbers of bins. Each line in the second graph corresponds to increasing the value of \(n\) by 1.
 
 \begin{figure}[H]
     \centering
@@ -399,8 +399,8 @@ Say we consider all the two-cell quantizers on \( \mathbb{X} = \{1,\ldots,5\} \)
 \end{figure}
 
 Note that the quantization gains aren't significant after \( n=2 \) (which corresponds to 15 bins), which indicates that this is a sufficient quantization level for a near-optimal policy.
-
-Similarly, we have the following graphs for \( \mathbb{X} = \{1,\ldots,16\} \).
+\newpage
+Similarly, for 2-cell quantizers on \( \mathbb{X} = \{1,\ldots,16\} \),
 
 \begin{figure}[H]
     \centering
@@ -414,7 +414,32 @@ Similarly, we have the following graphs for \( \mathbb{X} = \{1,\ldots,16\} \).
     \caption{Convergece of learned policies}
 \end{figure}
 
-Here, additional quantization may be required to get closer to the optimal policy. Unfortunately, the number of bins grows quickly with \(n\), and so further increasing the granularity becomes very computationally demanding. However, the number of actual visited states tends to be much lower than the total number of bins, and so it may be possible to increase the efficiency of this algorithm by restricting the state space of \(\pi_t\).
+Finally, we consider the case where we have quantized a Gaussian-Markov source into 9 points to generate a discrete source, then run the above algorithm on this new source. Note that this new discrete source is not necessarily Markov, but we have run the algorithm pretending that it is.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=6cm, width=10cm]{cost_gaussian.png}
+    \caption{Long-term discounted cost of learned policies}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=6cm, width=10cm]{convergence_gaussian.png}
+    \caption{Convergece of learned policies}
+\end{figure}
+
+In the latter two examples, additional quantization may be required to get closer to the optimal policy. Unfortunately, the number of bins grows quickly with \(n\), and so further increasing the granularity becomes very computationally demanding. However, the number of actual visited \(\hat{\pi}_t\) tends to be much lower than the total number of bins, and so it may be possible to increase the efficiency of this algorithm by quantizing \( \pi_t \) in a non-uniform fasion.
+
+\subsection{Effect of Increasing n on the Rate-Distortion Function}
+In these simulations, we plot the rate-distortion function \( R(D) \) for different values of \( n \). We use the source alphabet \( \mathbb{X} = \{1,\ldots,8\} \).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=6cm, width=10cm]{rate_distortion.png}
+    \caption{Effect on the rate-distortion function}
+\end{figure}
+
+Note that distortion decreases as the rate of the quantizer for \( \mathbb{X} \) increases (as we would expect from standard rate-distortion theory results), but also that distortion decreases as the rate of the quantizer for \( \pi_t \) increases (this corresponds to getting closer to the optimal quantization policy).
 
 \section{Future Work}
 We note that the above Q-learning algorithm only converges when \( \beta \in (0,1) \) (i.e.\ for the discounted cost problem) and therefore is not applicable for the average cost problem, which is generally what we are interested in for source coding. It may be possible to adapt the Q-learning algorithm to solve the average cost problem (see e.g.\ \cite{Abounadi}), but this would require an extension of the results in~\cite{Kara} to this algorithm, which may require additional constraints on the source \( \mathbb{X} \).
