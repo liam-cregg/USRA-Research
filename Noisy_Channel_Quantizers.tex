@@ -37,49 +37,37 @@
 
 \begin{document}
 \title{Reinforcement Learning for Zero-Delay Coding of Markov Sources
-    \thanks{Research is supported by the Natural Sciences and Engineering Research Council of Canada. The first author was supported by a Queen's University Department of Mathematics and Statistics Summer Research Award.}
+    %    \thanks{Research is supported by the Natural Sciences and Engineering Research Council of Canada. The first author was supported by a Queen's University Department of Mathematics and Statistics Summer Research Award.}
 }
 
-\author{\IEEEauthorblockN{Liam Cregg}
-    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
-        \textit{Queen's University}\\
-        Kingston, Canada \\
-        liam.cregg@queensu.ca}
-    \and
-    \IEEEauthorblockN{Tam\'as Linder}
-    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
-        \textit{Queen's University}\\
-        Kingston, Canada \\
-        tamas.linder@queensu.ca}
-    \and
-    \IEEEauthorblockN{Serdar Y\"uksel}
-    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
-        \textit{Queen's University}\\
-        Kingston, Canada \\
-        yuksel@queensu.ca}}
+%\author{\IEEEauthorblockN{Liam Cregg}
+%    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
+%        \textit{Queen's University}\\
+%        Kingston, Canada \\
+%        liam.cregg@queensu.ca}
+%    \and
+%    \IEEEauthorblockN{Tam\'as Linder}
+%    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
+%        \textit{Queen's University}\\
+%        Kingston, Canada \\
+%        tamas.linder@queensu.ca}
+%    \and
+%    \IEEEauthorblockN{Serdar Y\"uksel}
+%    \IEEEauthorblockA{\textit{Mathematics and Statistics} \\
+%        \textit{Queen's University}\\
+%        Kingston, Canada \\
+%        yuksel@queensu.ca}}
 
 \maketitle
 
-\begin{abstract}
-    In the classical lossy coding problem, one is allowed to encode long sequences of source symbols in order to achieve a lower distortion. This is undesirable in many delay-sensitive applications. Accordingly, we consider the zero-delay case where one wishes to encode a source symbol causally. It has been shown that this problem lends itself to stochastic control techniques, leading to existence and structural results. However, attempting to develop analytical solutions or algorithmic implementation using these methods has been computationally difficult. To that end, we propose a reinforcement learning approach. First, we will establish some supporting results on regularity and stability properties. Afterwards, building on recent results on quantized Q-learning, we show that a quantized Q-learning algorithm can be used to obtain a near-optimal policy for this problem. Finally, we provide some relevant simulation results.
-\end{abstract}
+%\begin{abstract}
+%    In the classical lossy coding problem, one is allowed to encode long sequences of source symbols in order to achieve a lower distortion. This is undesirable in many delay-sensitive applications. Accordingly, we consider the zero-delay case where one wishes to encode a source symbol causally. It has been shown that this problem lends itself to stochastic control techniques, leading to existence and structural results. However, attempting to develop analytical solutions or algorithmic implementation using these methods has been computationally difficult. To that end, we propose a reinforcement learning approach. First, we will establish some supporting results on regularity and stability properties. Afterwards, building on recent results on quantized Q-learning, we show that a quantized Q-learning algorithm can be used to obtain a near-optimal policy for this problem. Finally, we provide some relevant simulation results.
+%\end{abstract}
 
 % Intro to zero-delay quantizers, summarize results from "Zero-Delay Lossy Coding"
-\section{Zero-Delay Lossy Coding}\label{section:optimal quantizers}
+\section{Zero-Delay Lossy Coding: Noisy Channel Case}\label{section:optimal quantizers}
 \subsection{Optimal Quantizers}
-We are interested in a variant of Shannon's lossy source coding problem, which we recall: Given an information source \( \{X_t\}_{t\ge0} \) from a finite alphabet \( \mathbb{X} \), one wishes to compress this source at rate \(R\) bits per source symbol, and then reproduce the source as \( \{\hat{X}_t\}_{t\ge0} \), where \(\hat{\mathbb{X}}\) is the (also finite) reproduction alphabet. In particular, a \((2^{RT},T)\) block code encodes T source symbols \(X_{[0,T-1]}\) as \(\gamma^e : \mathbb{X}^T \to \{1,\ldots,2^{RT}\} \), and decodes them as \( \gamma^d : \{1,\ldots,2^{RT}\} \to \hat{\mathbb{X}}^T \). The goal is often to minimize the distortion, given by:
-
-\[ D_T(R) := \frac{1}{T} E[\sum_{t=0}^{T-1}d(X_t,\hat{X_t})]\]
-
-\noindent where \(d : \mathbb{X} \times \hat{\mathbb{X}} \to [0,\infty)\) is an (additive) distortion measure. We call a rate-distortion pair \((R,D)\) achievable if there exists a sequence of \((2^{RT},T)\) codes \((\gamma^e,\gamma^d)\) such that
-
-\[ \limsup_{T \to \infty}D_T(R) \le D\]
-
-The minimum achievable distortion for a given rate \(R\) is denoted by \(D(R)\), and classically we can obtain this distortion by taking the block length \(T\) to infinity (provided that the source is stationary and ergodic), i.e.
-
-\[D(R) = \lim_{T \to  \infty}D_T(R)\]
-
-However, this approach requires encoding very large blocks of data at a time, and hence incurs large delay. This delay may not be allowable in many real-time applications. Accordingly, we study a causal variant of this lossy coding problem, where we enforce zero delay (hence a block coding approach is not viable). We will assume throughout that the source \( \{X_t\}_{t \ge 0} \) is a discrete-time Markov process with probability matrix \( P \), which is irreducible and aperiodic (and thus admits a unique invariant measure). After encoding, the (compressed) information is sent over a discrete noiseless channel with input and output alphabets \( \mathcal{M} := \{1,\ldots,M\} \).
+We will assume throughout that the source \( \{X_t\}_{t \ge 0} \) is a discrete-time Markov process with probability matrix \( P \), which is irreducible and aperiodic (and thus admits a unique invariant measure). After encoding, the (compressed) information is sent over a discrete noiseless channel with input and output alphabets \( \mathcal{M} := \{1,\ldots,M\} \).
 
 Thus, the encoder is defined by an encoder policy \( \{\gamma^e_t\}_{t \ge 0} \), where \( \gamma^e_t : \mathcal{M}^t \times \mathbb{X}^{t+1} \to \mathcal{M} \). That is, the encoder can use all past encoder outputs and all past and current source inputs to generate the current encoder output. This can be viewed as the encoder policy selecting a quantizer \( Q_t : \mathbb{X} \to \mathcal{M} \) using past information, then quantizing \( X_t \) as \( q_t = Q_t(X_t) \)~\cite{Linder}. Then, the decoder generates the reconstruction \( \hat{X}_t \) without delay, using decoder policy \( \{\gamma^d_t\}_{t \ge 0} \), where \( \gamma^d_t : \mathcal{M}^{t+1} \to \hat{\mathbb{X}} \). Thus we have \( \hat{X}_t = \gamma^d_t(q_{[0,t]}) \).
 
